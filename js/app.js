@@ -2025,6 +2025,10 @@ if (document.querySelector('.main-slider')) {
 		slidesPerView: 1,
 		spaceBetween: 0,
 		autoHeight: true,
+		autoplay: {
+			delay: 3000,
+			disableOnInteraction: true,
+		},
 		speed: 800,
 		//loop: true,
 		//preloadImages: false,
@@ -2102,6 +2106,54 @@ if (document.querySelector('.main-products')) {
 		navigation: {
 			prevEl: '.products-slider__prev',
 			nextEl: '.products-slider__next',
+		},
+		on: {
+			lazyImageReady: function () {
+				ibg();
+			},
+		}
+	});
+}
+if (document.querySelector('.page-product')) {
+	let bransdsSlider = new Swiper('.page-product__body', {
+		observer: true,
+		observeParents: true,
+		slidesPerView: 5,
+		spaceBetween: 0,
+		autoHeight: true,
+		speed: 800,
+		loop: true,
+		//preloadImages: false,
+		//lazy: true,
+		// Dotts
+		breakpoints: {
+			320:{
+				slidesPerView: 1,
+			},
+			479.98:{
+				slidesPerView: 2,
+			},
+			768: {
+				slidesPerView: 3,
+				spaceBetween: 20,
+			},
+			970: {
+				slidesPerView: 4,
+				spaceBetween: 30,
+			},
+			1269: {
+				slidesPerView: 5,
+				spaceBetween: 30,
+			},
+		},
+		//pagination: {
+		//	el: '.products-slider__quantity',
+		//	type: 'fraction',
+		//},
+		// Arrows
+		navigation: {
+			prevEl: '.page-product__arrows-prev',
+			nextEl: '.page-product__arrows-next',
 		},
 		on: {
 			lazyImageReady: function () {
