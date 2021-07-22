@@ -1166,7 +1166,7 @@ if (document.querySelector('.newpage-product')) {
 		observer: true,
 		observeParents: true,
 		slidesPerView: 4,
-		spaceBetween: 0,
+		spaceBetween: 6,
 		//autoHeight: true,
 		speed: 800,
 		//loop: true,
