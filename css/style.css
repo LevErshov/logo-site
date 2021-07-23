@@ -3214,14 +3214,15 @@ body.ie ._ibg img {
 }
 
 .content-slider__information-1 {
-  font-size: 18px;
+  font-size: 14px;
+  color: #333333;
   line-height: 24px;
   font-weight: 900;
   text-transform: uppercase;
-  color: #f68038;
 }
 
 .content-slider__information-1 span {
+  margin-left: 5px;
   font-size: 14px;
   color: #333333;
   line-height: 24px;
@@ -3230,10 +3231,8 @@ body.ie ._ibg img {
 }
 
 .content-slider__information-2 {
-  font-size: 14px;
-  color: #ffffff;
-  background: #919191;
-  padding: 2px 7px;
+  font-size: 24px;
+  color: #f68038;
   line-height: 24px;
   font-weight: 900;
   display: inline-block;
@@ -3249,9 +3248,8 @@ body.ie ._ibg img {
 }
 
 .content-slider__information-3 span {
-  margin-left: 4px;
   font-size: 14px;
-  color: #979797;
+  color: #333333;
   text-transform: uppercase;
   font-weight: 900;
   line-height: 150%;
