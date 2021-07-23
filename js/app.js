@@ -131,29 +131,6 @@ function body_lock_add(delay) {
 }
 //=================
 // LettersAnimation
-let title = document.querySelectorAll('._letter-animation');
-if (title) {
-	for (let index = 0; index < title.length; index++) {
-		let el = title[index];
-		let txt = el.innerHTML;
-		let txt_words = txt.replace('  ', ' ').split(' ');
-		let new_title = '';
-		for (let index = 0; index < txt_words.length; index++) {
-			let txt_word = txt_words[index];
-			let len = txt_word.length;
-			new_title = new_title + '<p>';
-			for (let index = 0; index < len; index++) {
-				let it = txt_word.substr(index, 1);
-				if (it == ' ') {
-					it = '&nbsp;';
-				}
-				new_title = new_title + '<span>' + it + '</span>';
-			}
-			el.innerHTML = new_title;
-			new_title = new_title + '&nbsp;</p>';
-		}
-	}
-}
 //=================
 //Tabs
 let tabs = document.querySelectorAll("._tabs");
@@ -320,22 +297,7 @@ function gallery_init() {
 }
 //=================
 //SearchInList
-function search_in_list(input) {
-	let ul = input.parentNode.querySelector('ul')
-	let li = ul.querySelectorAll('li');
-	let filter = input.value.toUpperCase();
 
-	for (i = 0; i < li.length; i++) {
-		let el = li[i];
-		let item = el;
-		txtValue = item.textContent || item.innerText;
-		if (txtValue.toUpperCase().indexOf(filter) > -1) {
-			el.style.display = "";
-		} else {
-			el.style.display = "none";
-		}
-	}
-}
 //=================
 //DigiFormat
 function digi(str) {
@@ -388,84 +350,6 @@ function digi_animate_value(el, start, end, duration) {
 }
 //=================
 //Popups
-let popup_link = document.querySelectorAll('._popup-link');
-let popups = document.querySelectorAll('.popup');
-for (let index = 0; index < popup_link.length; index++) {
-	const el = popup_link[index];
-	el.addEventListener('click', function (e) {
-		if (unlock) {
-			let item = el.getAttribute('href').replace('#', '');
-			let video = el.getAttribute('data-video');
-			popup_open(item, video);
-		}
-		e.preventDefault();
-	})
-}
-for (let index = 0; index < popups.length; index++) {
-	const popup = popups[index];
-	popup.addEventListener("click", function (e) {
-		if (!e.target.closest('.popup__body')) {
-			popup_close(e.target.closest('.popup'));
-		}
-	});
-}
-function popup_open(item, video = '') {
-	let activePopup = document.querySelectorAll('.popup._active');
-	if (activePopup.length > 0) {
-		popup_close('', false);
-	}
-	let curent_popup = document.querySelector('.popup_' + item);
-	if (curent_popup && unlock) {
-		if (video != '' && video != null) {
-			let popup_video = document.querySelector('.popup_video');
-			popup_video.querySelector('.popup__video').innerHTML = '<iframe src="https://www.youtube.com/embed/' + video + '?autoplay=1"  allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-		}
-		if (!document.querySelector('.menu__body._active')) {
-			body_lock_add(500);
-		}
-		curent_popup.classList.add('_active');
-		history.pushState('', '', '#' + item);
-	}
-}
-function popup_close(item, bodyUnlock = true) {
-	if (unlock) {
-		if (!item) {
-			for (let index = 0; index < popups.length; index++) {
-				const popup = popups[index];
-				let video = popup.querySelector('.popup__video');
-				if (video) {
-					video.innerHTML = '';
-				}
-				popup.classList.remove('_active');
-			}
-		} else {
-			let video = item.querySelector('.popup__video');
-			if (video) {
-				video.innerHTML = '';
-			}
-			item.classList.remove('_active');
-		}
-		if (!document.querySelector('.menu__body._active') && bodyUnlock) {
-			body_lock_remove(500);
-		}
-		history.pushState('', '', window.location.href.split('#')[0]);
-	}
-}
-let popup_close_icon = document.querySelectorAll('.popup__close,._popup-close');
-if (popup_close_icon) {
-	for (let index = 0; index < popup_close_icon.length; index++) {
-		const el = popup_close_icon[index];
-		el.addEventListener('click', function () {
-			popup_close(el.closest('.popup'));
-		})
-	}
-}
-document.addEventListener('keydown', function (e) {
-	if (e.code === 'Escape') {
-		popup_close();
-	}
-});
-
 //=================
 //SlideToggle
 let _slideUp = (target, duration = 500) => {
@@ -551,219 +435,12 @@ function _is_hidden(el) {
 	return (el.offsetParent === null)
 }
 // ShowMore Beta ========================
-let moreBlocks = document.querySelectorAll('._more-block');
-if (moreBlocks.length > 0) {
-	let wrapper = document.querySelector('.wrapper');
-	for (let index = 0; index < moreBlocks.length; index++) {
-		const moreBlock = moreBlocks[index];
-		let items = moreBlock.querySelectorAll('._more-item');
-		if (items.length > 0) {
-			let itemsMore = moreBlock.querySelector('._more-link');
-			let itemsContent = moreBlock.querySelector('._more-content');
-			let itemsView = itemsContent.getAttribute('data-view');
-			if (getComputedStyle(itemsContent).getPropertyValue("transition-duration") === '0s') {
-				itemsContent.style.cssText = "transition-duration: 1ms";
-			}
-			itemsMore.addEventListener("click", function (e) {
-				if (itemsMore.classList.contains('_active')) {
-					setSize();
-				} else {
-					setSize('start');
-				}
-				itemsMore.classList.toggle('_active');
-				e.preventDefault();
-			});
 
-			let isScrollStart;
-			function setSize(type) {
-				let resultHeight;
-				let itemsContentHeight = 0;
-				let itemsContentStartHeight = 0;
-
-				for (let index = 0; index < items.length; index++) {
-					if (index < itemsView) {
-						itemsContentHeight += items[index].offsetHeight;
-					}
-					itemsContentStartHeight += items[index].offsetHeight;
-				}
-				resultHeight = (type === 'start') ? itemsContentStartHeight : itemsContentHeight;
-				isScrollStart = window.innerWidth - wrapper.offsetWidth;
-				itemsContent.style.height = `${resultHeight}px`;
-			}
-
-			itemsContent.addEventListener("transitionend", updateSize, false);
-
-			function updateSize() {
-				let isScrollEnd = window.innerWidth - wrapper.offsetWidth;
-				if (isScrollStart === 0 && isScrollEnd > 0 || isScrollStart > 0 && isScrollEnd === 0) {
-					if (itemsMore.classList.contains('_active')) {
-						setSize('start');
-					} else {
-						setSize();
-					}
-				}
-			}
-			window.addEventListener("resize", function (e) {
-				if (!itemsMore.classList.contains('_active')) {
-					setSize();
-				} else {
-					setSize('start');
-				}
-			});
-			setSize();
-		}
-	}
-}
 //==RATING======================================
-const ratings = document.querySelectorAll('.rating');
-if (ratings.length > 0) {
-	initRatings();
-}
+
 // Основная функция
-function initRatings() {
-	let ratingActive, ratingValue;
-	// "Бегаем" по всем рейтингам на странице
-	for (let index = 0; index < ratings.length; index++) {
-		const rating = ratings[index];
-		initRating(rating);
-	}
-
-	// Инициализируем конкретный рейтинг
-	function initRating(rating) {
-		initRatingVars(rating);
-
-		setRatingActiveWidth();
-
-		if (rating.classList.contains('rating_set')) {
-			setRating(rating);
-		}
-	}
-
-	// Инициализайция переменных
-	function initRatingVars(rating) {
-		ratingActive = rating.querySelector('.rating__active');
-		ratingValue = rating.querySelector('.rating__value');
-	}
-	// Изменяем ширину активных звезд
-	function setRatingActiveWidth(index = ratingValue.innerHTML) {
-		const ratingActiveWidth = index / 0.05;
-		ratingActive.style.width = `${ratingActiveWidth}%`;
-	}
-	// Возможность указать оценку 
-	function setRating(rating) {
-		const ratingItems = rating.querySelectorAll('.rating__item');
-		for (let index = 0; index < ratingItems.length; index++) {
-			const ratingItem = ratingItems[index];
-			ratingItem.addEventListener("mouseenter", function (e) {
-				// Обновление переменных
-				initRatingVars(rating);
-				// Обновление активных звезд
-				setRatingActiveWidth(ratingItem.value);
-			});
-			ratingItem.addEventListener("mouseleave", function (e) {
-				// Обновление активных звезд
-				setRatingActiveWidth();
-			});
-			ratingItem.addEventListener("click", function (e) {
-				// Обновление переменных
-				initRatingVars(rating);
-
-				if (rating.dataset.ajax) {
-					// "Отправить" на сервер
-					setRatingValue(ratingItem.value, rating);
-				} else {
-					// Отобразить указанную оцнку
-					ratingValue.innerHTML = index + 1;
-					setRatingActiveWidth();
-				}
-			});
-		}
-	}
-
-	async function setRatingValue(value, rating) {
-		if (!rating.classList.contains('rating_sending')) {
-			rating.classList.add('rating_sending');
-
-			// Отправика данных (value) на сервер
-			let response = await fetch('rating.json', {
-				method: 'GET',
-
-				//body: JSON.stringify({
-				//	userRating: value
-				//}),
-				//headers: {
-				//	'content-type': 'application/json'
-				//}
-
-			});
-			if (response.ok) {
-				const result = await response.json();
-
-				// Получаем новый рейтинг
-				const newRating = result.newRating;
-
-				// Вывод нового среднего результата
-				ratingValue.innerHTML = newRating;
-
-				// Обновление активных звезд
-				setRatingActiveWidth();
-
-				rating.classList.remove('rating_sending');
-			} else {
-				alert("Ошибка");
-
-				rating.classList.remove('rating_sending');
-			}
-		}
-	}
-}
 //========================================
-//Animate
-function animate({ timing, draw, duration }) {
-	let start = performance.now();
-	requestAnimationFrame(function animate(time) {
-		// timeFraction изменяется от 0 до 1
-		let timeFraction = (time - start) / duration;
-		if (timeFraction > 1) timeFraction = 1;
 
-		// вычисление текущего состояния анимации
-		let progress = timing(timeFraction);
-
-		draw(progress); // отрисовать её
-
-		if (timeFraction < 1) {
-			requestAnimationFrame(animate);
-		}
-
-	});
-}
-function makeEaseOut(timing) {
-	return function (timeFraction) {
-		return 1 - timing(1 - timeFraction);
-	}
-}
-function makeEaseInOut(timing) {
-	return function (timeFraction) {
-		if (timeFraction < .5)
-			return timing(2 * timeFraction) / 2;
-		else
-			return (2 - timing(2 * (1 - timeFraction))) / 2;
-	}
-}
-function quad(timeFraction) {
-	return Math.pow(timeFraction, 2)
-}
-function circ(timeFraction) {
-	return 1 - Math.sin(Math.acos(timeFraction));
-}
-/*
-animate({
-	duration: 1000,
-	timing: makeEaseOut(quad),
-	draw(progress) {
-		window.scroll(0, start_position + 400 * progress);
-	}
-});*/
 
 //Полифилы
 (function () {
@@ -1037,34 +714,11 @@ if (document.querySelector('.main-slider')) {
 			el: '.main-slider__pagination',
 			clickable: true,
 		},
-		// Arrows
-		/*
-		navigation: {
-			nextEl: '.about__more .more__item_next',
-			prevEl: '.about__more .more__item_prev',
+		effect: 'fade',
+
+		fadeEffect: {
+			crossFade: true,
 		},
-		*/
-		/*
-		breakpoints: {
-			320: {
-				slidesPerView: 1,
-				spaceBetween: 0,
-				autoHeight: true,
-			},
-			768: {
-				slidesPerView: 2,
-				spaceBetween: 20,
-			},
-			992: {
-				slidesPerView: 3,
-				spaceBetween: 20,
-			},
-			1268: {
-				slidesPerView: 4,
-				spaceBetween: 30,
-			},
-		},
-		*/
 		on: {
 			lazyImageReady: function () {
 				ibg();
@@ -1724,28 +1378,22 @@ if (quantityButtons.length > 0) {
 }
 
 //RANGE
-const priceSlider = document.querySelector('.');
+const priceSlider = document.querySelector('.price__range');
 if (priceSlider) {
-
-	let textFrom = priceSlider.getAttribute('data-from');
-	let textTo = priceSlider.getAttribute('data-to');
-
 	noUiSlider.create(priceSlider, {
 		start: [0, 200000],
 		connect: true,
-		tooltips: [wNumb({ decimals: 0, prefix: textFrom + ' ' }), wNumb({ decimals: 0, prefix: textTo + ' ' })],
+		tooltips: [wNumb({ decimals: 0 }), wNumb({ decimals: 0 })],
 		range: {
-			'min': [2000],
+			'min': [0],
 			'max': [200000]
 		}
 	});
 
-	/*
 	const priceStart = document.getElementById('price-start');
 	const priceEnd = document.getElementById('price-end');
 	priceStart.addEventListener('change', setPriceValues);
 	priceEnd.addEventListener('change', setPriceValues);
-	*/
 
 	function setPriceValues() {
 		let priceStartValue;
