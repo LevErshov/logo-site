@@ -258,6 +258,10 @@ textarea:focus {
   padding: 0px 20px;
 }
 
+.input._error {
+  border: 1px solid red;
+}
+
 textarea.input {
   resize: none;
   padding: 0px 0px;
@@ -1160,12 +1164,20 @@ body.ie ._ibg img {
 }
 
 .form-tabs-reg__item {
+  position: relative;
   height: 31px;
   border: 1px solid #e5e5e5;
 }
 
 .form-tabs-reg__item-select {
   border: none;
+}
+
+.form-tabs-reg__item .form__error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: red;
 }
 
 .form-tabs-reg__item-comment {
